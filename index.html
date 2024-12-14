@@ -1,146 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ping Pong</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: url('space_background.jpg') no-repeat center center/cover;
-    }
-    canvas {
-      display: block;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pong Game - https://pong.ping</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <script>
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-    document.body.appendChild(canvas);
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    <!-- 게임 화면 -->
+    <div id="gameContainer" style="position: relative; width: 800px; height: 400px; background-color: black;">
+        <!-- 가로벽 -->
+        <div id="topWall" style="position: absolute; top: 0; width: 100%; height: 10px; background-color: white;"></div>
+        <div id="bottomWall" style="position: absolute; bottom: 0; width: 100%; height: 10px; background-color: white;"></div>
 
-    // Game variables
-    let paddleHeight = 100;
-    let paddleWidth = 10;
-    let leftPaddleY = canvas.height / 2 - paddleHeight / 2;
-    let rightPaddleY = canvas.height / 2 - paddleHeight / 2;
-    let paddleSpeed = 10;
+        <!-- 탁구공 -->
+        <div id="ball" style="position: absolute; width: 15px; height: 15px; border-radius: 50%; background-color: white; top: 190px; left: 390px;"></div>
 
-    let ballX = canvas.width / 2;
-    let ballY = canvas.height / 2;
-    let ballRadius = 10;
-    let ballSpeedX = 5;
-    let ballSpeedY = 3;
+        <!-- 왼쪽 패들 -->
+        <div id="paddle-left" style="position: absolute; width: 15px; height: 100px; background-color: red; top: 150px; left: 10px;"></div>
 
-    const wallTop = canvas.height * 0.25;
-    const wallBottom = canvas.height * 0.6;
+        <!-- 오른쪽 패들 -->
+        <div id="paddle-right" style="position: absolute; width: 15px; height: 100px; background-color: blue; top: 150px; right: 10px;"></div>
+    </div>
 
-    let keys = {};
+    <!-- 점수판 -->
+    <div class="container">
+        <div id="bounce" style="float: left; color: red; font-size: 1.5rem; padding: 1rem;">0</div>
+        <div id="bounce2" style="float: right; color: blue; font-size: 1.5rem; padding: 1rem;">0</div>
+    </div>
 
-    window.addEventListener("keydown", (e) => {
-      keys[e.key] = true;
-    });
+    <!-- 우승자 메시지 -->
+    <div id="winner-message" style="font-size: 2rem; color: white; text-align: center; margin-top: 20px; display: none;"></div>
 
-    window.addEventListener("keyup", (e) => {
-      keys[e.key] = false;
-    });
+    <!-- 재시작 버튼 -->
+    <button id="restartButton" class="button">재시작</button>
 
-    function drawRect(x, y, width, height, color) {
-      ctx.fillStyle = color;
-      ctx.fillRect(x, y, width, height);
-    }
+    <!-- 카운트다운 -->
+    <div id="countdown" style="font-size: 2rem; color: white; display: none;">2</div>
 
-    function drawCircle(x, y, radius, color) {
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    function movePaddles() {
-      // Move left paddle
-      if (keys["w"] && leftPaddleY > wallTop) {
-        leftPaddleY -= paddleSpeed;
-      }
-      if (keys["s"] && leftPaddleY + paddleHeight < wallBottom) {
-        leftPaddleY += paddleSpeed;
-      }
-
-      // Move right paddle
-      if (keys["ArrowUp"] && rightPaddleY > wallTop) {
-        rightPaddleY -= paddleSpeed;
-      }
-      if (keys["ArrowDown"] && rightPaddleY + paddleHeight < wallBottom) {
-        rightPaddleY += paddleSpeed;
-      }
-    }
-
-    function updateBall() {
-      ballX += ballSpeedX;
-      ballY += ballSpeedY;
-
-      // Ball collision with top and bottom walls
-      if (ballY - ballRadius < wallTop || ballY + ballRadius > wallBottom) {
-        ballSpeedY *= -1;
-      }
-
-      // Ball collision with paddles
-      if (
-        ballX - ballRadius < paddleWidth &&
-        ballY > leftPaddleY &&
-        ballY < leftPaddleY + paddleHeight
-      ) {
-        ballSpeedX *= -1;
-      }
-      if (
-        ballX + ballRadius > canvas.width - paddleWidth &&
-        ballY > rightPaddleY &&
-        ballY < rightPaddleY + paddleHeight
-      ) {
-        ballSpeedX *= -1;
-      }
-
-      // Reset ball if it goes out
-      if (ballX < 0 || ballX > canvas.width) {
-        ballX = canvas.width / 2;
-        ballY = canvas.height / 2;
-      }
-    }
-
-    function draw() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw walls
-      drawRect(0, wallTop, canvas.width, 2, "white");
-      drawRect(0, wallBottom, canvas.width, 2, "white");
-
-      // Draw paddles
-      drawRect(0, leftPaddleY, paddleWidth, paddleHeight, "red");
-      drawRect(
-        canvas.width - paddleWidth,
-        rightPaddleY,
-        paddleWidth,
-        paddleHeight,
-        "blue"
-      );
-
-      // Draw ball
-      drawCircle(ballX, ballY, ballRadius, "white");
-    }
-
-    function gameLoop() {
-      movePaddles();
-      updateBall();
-      draw();
-      requestAnimationFrame(gameLoop);
-    }
-
-    gameLoop();
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
