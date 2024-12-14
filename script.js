@@ -131,23 +131,4 @@ function handlePaddleMovement(e) {
 // 게임 루프
 function gameLoop() {
   moveBall();
-  movePaddles();
-  increaseSpeed(); // 속도 증가 확인
-}
-
-let gameInterval = setInterval(gameLoop, 1000 / 60); // 60 FPS
-
-document.addEventListener('keydown', handlePaddleMovement);
-
-// 재시작 버튼 클릭 이벤트 처리
-restartButton.addEventListener('click', () => {
-  // 점수 초기화
-  leftScore = 0;
-  rightScore = 0;
-  updateScore();
-
-  // 공을 중앙에 배치하고 카운트다운 표시
-  ballX = 390;
-  ballY = 190;
-  ballSpeedX = 0;
-  ball
+  moveP
