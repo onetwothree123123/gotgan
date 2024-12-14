@@ -48,21 +48,23 @@
 
 /* 애니메이션 효과 */
 @keyframes bounce {
-  0%,
-  100% {
-    translate: 0px 36px;
+  0%, 100% {
+    -webkit-transform: translate(0px, 36px);
+    transform: translate(0px, 36px);
   }
   50% {
-    translate: 0px 46px;
+    -webkit-transform: translate(0px, 46px);
+    transform: translate(0px, 46px);
   }
 }
 @keyframes bounce2 {
-  0%,
-  100% {
-    translate: 0px 46px;
+  0%, 100% {
+    -webkit-transform: translate(0px, 46px);
+    transform: translate(0px, 46px);
   }
   50% {
-    translate: 0px 56px;
+    -webkit-transform: translate(0px, 56px);
+    transform: translate(0px, 56px);
   }
 }
 
@@ -77,27 +79,31 @@
     stop-color: #d3a5102e;
   }
 }
+
 @keyframes partciles {
-  0%,
-  100% {
-    translate: 0px 16px;
+  0%, 100% {
+    -webkit-transform: translate(0px, 16px);
+    transform: translate(0px, 16px);
   }
   50% {
-    translate: 0px 6px;
+    -webkit-transform: translate(0px, 6px);
+    transform: translate(0px, 6px);
   }
 }
+
 #particles {
   animation: partciles 4s ease-in-out infinite;
 }
+
 #animatedStop {
   animation: umbral 4s infinite;
 }
+
 #bounce {
   animation: bounce 4s ease-in-out infinite;
-  translate: 0px 36px;
 }
+
 #bounce2 {
   animation: bounce2 4s ease-in-out infinite;
-  translate: 0px 46px;
   animation-delay: 0.5s;
 }
