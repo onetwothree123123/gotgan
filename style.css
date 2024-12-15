@@ -1,6 +1,39 @@
 /* 게임 화면 */
 .container {
     background-color: #414141;
+    width: 800px;
+    height: 400px;
+    margin: 20px auto;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid white;
+}
+
+/* 공 */
+#ball {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #ff3b3b;
+    border-radius: 50%;
+}
+
+/* 패들 */
+#paddle-left, #paddle-right {
+    position: absolute;
+    width: 20px;
+    height: 100px;
+    background-color: white;
+}
+
+/* 왼쪽 패들 */
+#paddle-left {
+    left: 0;
+}
+
+/* 오른쪽 패들 */
+#paddle-right {
+    right: 0;
 }
 
 /* 버튼 스타일 */
@@ -24,6 +57,9 @@
     font-weight: 700;
     font-size: 1.5rem;
     transition: background-size 0.2s ease-in-out;
+    margin: 10px auto;
+    display: block;
+    text-align: center;
 }
 
 .button:hover {
@@ -34,76 +70,36 @@
     filter: hue-rotate(250deg);
 }
 
-/* 카운트다운 색상 */
-#countdown {
+/* 점수 및 메시지 */
+#winner-message {
     color: white;
     font-size: 2rem;
+    text-align: center;
     display: none;
 }
 
-/* 가로벽 색상 */
-#topWall, #bottomWall {
-    background-color: white;
+#countdown {
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    display: none;
 }
 
 /* 애니메이션 효과 */
 @keyframes bounce {
   0%, 100% {
-    -webkit-transform: translate(0px, 36px);
-    transform: translate(0px, 36px);
+    transform: translateY(0);
   }
   50% {
-    -webkit-transform: translate(0px, 46px);
-    transform: translate(0px, 46px);
+    transform: translateY(10px);
   }
-}
-@keyframes bounce2 {
-  0%, 100% {
-    -webkit-transform: translate(0px, 46px);
-    transform: translate(0px, 46px);
-  }
-  50% {
-    -webkit-transform: translate(0px, 56px);
-    transform: translate(0px, 56px);
-  }
-}
-
-@keyframes umbral {
-  0% {
-    stop-color: #d3a5102e;
-  }
-  50% {
-    stop-color: rgba(211, 165, 16, 0.519);
-  }
-  100% {
-    stop-color: #d3a5102e;
-  }
-}
-
-@keyframes partciles {
-  0%, 100% {
-    -webkit-transform: translate(0px, 16px);
-    transform: translate(0px, 16px);
-  }
-  50% {
-    -webkit-transform: translate(0px, 6px);
-    transform: translate(0px, 6px);
-  }
-}
-
-#particles {
-  animation: partciles 4s ease-in-out infinite;
-}
-
-#animatedStop {
-  animation: umbral 4s infinite;
 }
 
 #bounce {
-  animation: bounce 4s ease-in-out infinite;
+  animation: bounce 2s infinite;
 }
 
 #bounce2 {
-  animation: bounce2 4s ease-in-out infinite;
+  animation: bounce 2s infinite;
   animation-delay: 0.5s;
 }
