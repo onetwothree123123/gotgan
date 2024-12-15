@@ -14,7 +14,7 @@
     position: absolute;
     width: 20px;
     height: 20px;
-    background-color: #ff3b3b;
+    background-color: red;
     border-radius: 50%;
 }
 
@@ -36,40 +36,6 @@
     right: 0;
 }
 
-/* 버튼 스타일 */
-.button {
-    --main-color: rgb(46, 213, 115);
-    --main-bg-color: rgba(46, 213, 116, 0.36);
-    --pattern-color: rgba(46, 213, 116, 0.073);
-    filter: hue-rotate(0deg);
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 0.5rem;
-    background: radial-gradient(circle, var(--main-bg-color) 0%, rgba(0, 0, 0, 0) 95%),
-                linear-gradient(var(--pattern-color) 1px, transparent 1px),
-                linear-gradient(to right, var(--pattern-color) 1px, transparent 1px);
-    background-size: cover, 15px 15px, 15px 15px;
-    background-position: center center, center center, center center;
-    border-image: radial-gradient(circle, var(--main-color) 0%, rgba(0, 0, 0, 0) 100%) 1;
-    border-width: 1px 0 1px 0;
-    color: var(--main-color);
-    padding: 1rem 3rem;
-    font-weight: 700;
-    font-size: 1.5rem;
-    transition: background-size 0.2s ease-in-out;
-    margin: 10px auto;
-    display: block;
-    text-align: center;
-}
-
-.button:hover {
-    background-size: cover, 10px 10px, 10px 10px;
-}
-
-.button:active {
-    filter: hue-rotate(250deg);
-}
-
 /* 점수 및 메시지 */
 #winner-message {
     color: white;
@@ -78,28 +44,28 @@
     display: none;
 }
 
-#countdown {
+#scores {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     color: white;
-    font-size: 2rem;
-    text-align: center;
-    display: none;
+    font-size: 1.5rem;
 }
 
-/* 애니메이션 효과 */
-@keyframes bounce {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(10px);
-  }
+/* 버튼 스타일 */
+.button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #2ed573;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
-#bounce {
-  animation: bounce 2s infinite;
-}
-
-#bounce2 {
-  animation: bounce 2s infinite;
-  animation-delay: 0.5s;
+.button:hover {
+    background-color: #1eae53;
 }
