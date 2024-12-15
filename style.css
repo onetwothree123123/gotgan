@@ -16,6 +16,7 @@
     height: 20px;
     background-color: red;
     border-radius: 50%;
+    transition: all 0.05s linear; /* 부드러운 이동 */
 }
 
 /* 패들 */
@@ -24,26 +25,13 @@
     width: 20px;
     height: 100px;
     background-color: white;
+    transition: top 0.1s linear; /* 패들 부드러운 이동 */
 }
 
-/* 왼쪽 패들 */
-#paddle-left {
-    left: 0;
-}
+#paddle-left { left: 0; }
+#paddle-right { right: 0; }
 
-/* 오른쪽 패들 */
-#paddle-right {
-    right: 0;
-}
-
-/* 점수 및 메시지 */
-#winner-message {
-    color: white;
-    font-size: 2rem;
-    text-align: center;
-    display: none;
-}
-
+/* 점수 */
 #scores {
     position: absolute;
     top: 10px;
@@ -51,6 +39,17 @@
     transform: translateX(-50%);
     color: white;
     font-size: 1.5rem;
+}
+
+/* 우승 메시지 */
+#winner-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 2rem;
+    display: none;
 }
 
 /* 버튼 스타일 */
