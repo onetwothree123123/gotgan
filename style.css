@@ -14,7 +14,7 @@
     position: absolute;
     width: 20px;
     height: 20px;
-    background-color: red;
+    background-color: white; /* 공 색상: 흰색 */
     border-radius: 50%;
     transition: all 0.05s linear; /* 부드러운 이동 */
 }
@@ -56,10 +56,16 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: white;
-    font-size: 2rem;
+    color: black; /* 텍스트 색상 */
+    background-color: white; /* 흰색 배경 */
+    border: 2px solid black; /* 검은 테두리 */
+    padding: 20px;
+    font-size: 1.5rem;
     text-align: center;
     display: none;
+    justify-content: center; /* 메시지 중앙 정렬 */
+    align-items: center;
+    border-radius: 8px; /* 둥근 모서리 */
 }
 
 /* 버튼 스타일 */
@@ -74,7 +80,6 @@
     border-radius: 5px;
     cursor: pointer;
 }
-
 .button:hover {
     background-color: #1eae53;
 }
