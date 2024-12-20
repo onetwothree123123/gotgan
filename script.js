@@ -15,13 +15,13 @@ const rightDownButton = document.getElementById('right-down');
 
 // 게임 상태 변수
 let ballX = 390, ballY = 190;
-let ballSpeedX = 2; // 공의 초기 속도 (더 낮춤)
-let ballSpeedY = 2; // 공의 초기 속도 (더 낮춤)
+let ballSpeedX = 3; // 공의 초기 속도 (조금 빠르게)
+let ballSpeedY = 3; // 공의 초기 속도 (조금 빠르게)
 let paddleLeftY = 150, paddleRightY = 150;
 let paddleSpeed = 20;
 let leftScore = 0, rightScore = 0;
 let isGameOver = false; // 게임 종료 여부 확인 변수
-const MAX_SPEED = 4; // 공의 최대 속도 제한 (더 낮춤)
+const MAX_SPEED = 5; // 공의 최대 속도 제한 (적당히 빠르게)
 
 // 게임 초기화
 function initializeGame() {
@@ -43,12 +43,12 @@ function moveBall() {
 
     // 공이 패들에 튕기는 처리
     if (ballX <= 20 && ballY >= paddleLeftY && ballY <= paddleLeftY + 100) {
-        ballSpeedX = -ballSpeedX * 1.02; // 속도 증가율 최소화
-        ballSpeedY = ballSpeedY * 1.02; // 속도 증가율 최소화
+        ballSpeedX = -ballSpeedX * 1.05; // 속도 증가율
+        ballSpeedY = ballSpeedY * 1.05; // 속도 증가율
     }
     if (ballX >= 760 && ballY >= paddleRightY && ballY <= paddleRightY + 100) {
-        ballSpeedX = -ballSpeedX * 1.02; // 속도 증가율 최소화
-        ballSpeedY = ballSpeedY * 1.02; // 속도 증가율 최소화
+        ballSpeedX = -ballSpeedX * 1.05; // 속도 증가율
+        ballSpeedY = ballSpeedY * 1.05; // 속도 증가율
     }
 
     // 공 속도 최대치 제한
@@ -89,8 +89,8 @@ function updateScore() {
 function resetBall() {
     ballX = 390;
     ballY = 190;
-    ballSpeedX = ballSpeedX > 0 ? -2 : 2; // 기본 속도로 리셋
-    ballSpeedY = ballSpeedY > 0 ? -2 : 2; // 기본 속도로 리셋
+    ballSpeedX = ballSpeedX > 0 ? -3 : 3; // 기본 속도로 리셋
+    ballSpeedY = ballSpeedY > 0 ? -3 : 3; // 기본 속도로 리셋
 }
 
 // 우승 여부 확인
