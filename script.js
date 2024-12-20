@@ -6,13 +6,19 @@ const rightScoreElement = document.getElementById('bounce2');
 const winnerMessage = document.getElementById('winner-message');
 const restartButton = document.getElementById('restartButton');
 
+// 모바일 컨트롤 버튼
+const leftUpButton = document.getElementById('left-up');
+const leftDownButton = document.getElementById('left-down');
+const rightUpButton = document.getElementById('right-up');
+const rightDownButton = document.getElementById('right-down');
+
 let ballX = 390, ballY = 190;
 let ballSpeedX = 2, ballSpeedY = 2;
 let paddleLeftY = 150, paddleRightY = 150;
 let paddleSpeed = 20;
 let leftScore = 0, rightScore = 0;
 let gameInterval;
-let isGameOver = false; // 게임 종료 상태를 확인하는 변수
+let isGameOver = false;
 
 // 초기화 함수
 function initializeGame() {
@@ -24,19 +30,15 @@ function initializeGame() {
 
 // 공 이동 함수
 function moveBall() {
-    if (isGameOver) return; // 게임이 종료되면 공을 움직이지 않음
+    if (isGameOver) return;
 
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
-    // 벽에 튕기기
     if (ballY <= 0 || ballY >= 380) ballSpeedY = -ballSpeedY;
-
-    // 패들에 튕기기
     if (ballX <= 20 && ballY >= paddleLeftY && ballY <= paddleLeftY + 100) ballSpeedX = -ballSpeedX;
     if (ballX >= 760 && ballY >= paddleRightY && ballY <= paddleRightY + 100) ballSpeedX = -ballSpeedX;
 
-    // 득점 처리
     if (ballX <= 0) {
         rightScore++;
         resetBall();
@@ -70,34 +72,55 @@ function updateScore() {
 function resetBall() {
     ballX = 390;
     ballY = 190;
-    ballSpeedX = ballSpeedX > 0 ? -2 : 2; // 방향 반대로
+    ballSpeedX = ballSpeedX > 0 ? -2 : 2;
     ballSpeedY = ballSpeedY > 0 ? -2 : 2;
 }
 
-// 우승 여부 확인
+// 우승 확인
 function checkWinner() {
     if (leftScore >= 5) {
-        showWinner('Red'); // 왼쪽 플레이어 승리
+        showWinner('Red');
     } else if (rightScore >= 5) {
-        showWinner('Blue'); // 오른쪽 플레이어 승리
+        showWinner('Blue');
     }
 }
 
-// 우승 메시지 표시 및 게임 종료 처리
+// 우승 메시지 표시
 function showWinner(winner) {
-    isGameOver = true; // 게임 종료 상태로 설정
+    isGameOver = true;
     winnerMessage.textContent = `Winner: ${winner}`;
-    winnerMessage.style.color = winner.toLowerCase(); // "Red" 또는 "Blue"에 맞는 색상
+    winnerMessage.style.color = winner.toLowerCase();
     winnerMessage.style.display = 'block';
-    clearInterval(gameInterval); // 게임 루프 종료
+    clearInterval(gameInterval);
 }
 
-// 키보드 입력 처리
+// 키보드 입력
 document.addEventListener('keydown', (e) => {
     if (e.key === 'w') paddleLeftY -= paddleSpeed;
     if (e.key === 's') paddleLeftY += paddleSpeed;
     if (e.key === 'ArrowUp') paddleRightY -= paddleSpeed;
     if (e.key === 'ArrowDown') paddleRightY += paddleSpeed;
+});
+
+// 모바일 컨트롤 버튼 이벤트
+leftUpButton.addEventListener('click', () => {
+    paddleLeftY -= paddleSpeed;
+    movePaddles();
+});
+
+leftDownButton.addEventListener('click', () => {
+    paddleLeftY += paddleSpeed;
+    movePaddles();
+});
+
+rightUpButton.addEventListener('click', () => {
+    paddleRightY -= paddleSpeed;
+    movePaddles();
+});
+
+rightDownButton.addEventListener('click', () => {
+    paddleRightY += paddleSpeed;
+    movePaddles();
 });
 
 // 게임 루프
@@ -110,12 +133,12 @@ function gameLoop() {
 restartButton.addEventListener('click', () => {
     leftScore = 0;
     rightScore = 0;
-    isGameOver = false; // 게임 종료 상태 해제
+    isGameOver = false;
     updateScore();
     resetBall();
     initializeGame();
     winnerMessage.style.display = 'none';
-    gameInterval = setInterval(gameLoop, 16); // 게임 루프 다시 시작
+    gameInterval = setInterval(gameLoop, 16);
 });
 
 // 게임 시작
