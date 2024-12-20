@@ -19,17 +19,26 @@
     transition: all 0.05s linear; /* 부드러운 이동 */
 }
 
-/* 패들 */
+/* 패들 스타일 */
 #paddle-left, #paddle-right {
     position: absolute;
     width: 20px;
     height: 100px;
-    background-color: white;
-    transition: top 0.1s linear; /* 패들 부드러운 이동 */
+    border-radius: 10px; /* 모서리를 둥글게 */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
 }
 
-#paddle-left { left: 0; }
-#paddle-right { right: 0; }
+/* 왼쪽 패들: 빨간색 */
+#paddle-left {
+    left: 0;
+    background-color: red;
+}
+
+/* 오른쪽 패들: 파란색 */
+#paddle-right {
+    right: 0;
+    background-color: blue;
+}
 
 /* 점수 */
 #scores {
@@ -49,6 +58,7 @@
     transform: translate(-50%, -50%);
     color: white;
     font-size: 2rem;
+    text-align: center;
     display: none;
 }
 
@@ -64,7 +74,6 @@
     border-radius: 5px;
     cursor: pointer;
 }
-
 .button:hover {
     background-color: #1eae53;
 }
