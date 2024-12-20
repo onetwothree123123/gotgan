@@ -12,6 +12,7 @@ let paddleLeftY = 150, paddleRightY = 150;
 let paddleSpeed = 20;
 let leftScore = 0, rightScore = 0;
 let gameInterval;
+let isGameOver = false; // 게임 종료 상태를 확인하는 변수
 
 // 초기화 함수
 function initializeGame() {
@@ -23,15 +24,31 @@ function initializeGame() {
 
 // 공 이동 함수
 function moveBall() {
+    if (isGameOver) return; // 게임이 종료되면 공을 움직이지 않음
+
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
+    // 벽에 튕기기
     if (ballY <= 0 || ballY >= 380) ballSpeedY = -ballSpeedY;
+
+    // 패들에 튕기기
     if (ballX <= 20 && ballY >= paddleLeftY && ballY <= paddleLeftY + 100) ballSpeedX = -ballSpeedX;
     if (ballX >= 760 && ballY >= paddleRightY && ballY <= paddleRightY + 100) ballSpeedX = -ballSpeedX;
 
-    if (ballX <= 0) { rightScore++; resetBall(); updateScore(); }
-    if (ballX >= 780) { leftScore++; resetBall(); updateScore(); }
+    // 득점 처리
+    if (ballX <= 0) {
+        rightScore++;
+        resetBall();
+        updateScore();
+        checkWinner();
+    }
+    if (ballX >= 780) {
+        leftScore++;
+        resetBall();
+        updateScore();
+        checkWinner();
+    }
 
     ball.style.left = ballX + 'px';
     ball.style.top = ballY + 'px';
@@ -57,10 +74,22 @@ function resetBall() {
     ballSpeedY = ballSpeedY > 0 ? -2 : 2;
 }
 
-// 게임 루프
-function gameLoop() {
-    moveBall();
-    movePaddles();
+// 우승 여부 확인
+function checkWinner() {
+    if (leftScore >= 5) {
+        showWinner('Red'); // 왼쪽 플레이어 승리
+    } else if (rightScore >= 5) {
+        showWinner('Blue'); // 오른쪽 플레이어 승리
+    }
+}
+
+// 우승 메시지 표시 및 게임 종료 처리
+function showWinner(winner) {
+    isGameOver = true; // 게임 종료 상태로 설정
+    winnerMessage.textContent = `Winner: ${winner}`;
+    winnerMessage.style.color = winner.toLowerCase(); // "Red" 또는 "Blue"에 맞는 색상
+    winnerMessage.style.display = 'block';
+    clearInterval(gameInterval); // 게임 루프 종료
 }
 
 // 키보드 입력 처리
@@ -71,13 +100,22 @@ document.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowDown') paddleRightY += paddleSpeed;
 });
 
+// 게임 루프
+function gameLoop() {
+    moveBall();
+    movePaddles();
+}
+
 // 게임 리셋
 restartButton.addEventListener('click', () => {
     leftScore = 0;
     rightScore = 0;
-    resetBall();
+    isGameOver = false; // 게임 종료 상태 해제
     updateScore();
+    resetBall();
+    initializeGame();
     winnerMessage.style.display = 'none';
+    gameInterval = setInterval(gameLoop, 16); // 게임 루프 다시 시작
 });
 
 // 게임 시작
