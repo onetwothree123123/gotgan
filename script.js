@@ -15,13 +15,13 @@ const rightDownButton = document.getElementById('right-down');
 
 // 게임 상태 변수
 let ballX = 390, ballY = 190;
-let ballSpeedX = 4; // 공의 초기 속도 (X축 빠르게)
-let ballSpeedY = 4; // 공의 초기 속도 (Y축 빠르게)
+let ballSpeedX = 5; // 공의 초기 속도 (X축 빠르게)
+let ballSpeedY = 5; // 공의 초기 속도 (Y축 빠르게)
 let paddleLeftY = 150, paddleRightY = 150;
 let paddleSpeed = 20;
 let leftScore = 0, rightScore = 0;
 let isGameOver = false; // 게임 종료 여부 확인 변수
-const MAX_SPEED = 10; // 공의 최대 속도 제한
+const MAX_SPEED = 8; // 공의 최대 속도 제한
 
 // 게임 초기화
 function initializeGame() {
@@ -89,8 +89,8 @@ function updateScore() {
 function resetBall() {
     ballX = 390;
     ballY = 190;
-    ballSpeedX = ballSpeedX > 0 ? -4 : 4; // 기본 속도로 리셋
-    ballSpeedY = ballSpeedY > 0 ? -4 : 4; // 기본 속도로 리셋
+    ballSpeedX = ballSpeedX > 0 ? -5 : 5; // 기본 속도로 리셋
+    ballSpeedY = ballSpeedY > 0 ? -5 : 5; // 기본 속도로 리셋
 }
 
 // 우승 여부 확인
@@ -107,8 +107,7 @@ function showWinner(winner) {
     isGameOver = true;
     winnerMessage.textContent = `Winner: ${winner}`;
     winnerMessage.style.color = winner.toLowerCase(); // "Red" 또는 "Blue"에 맞는 색상
-    winnerMessage.style.display = 'block';
-    clearInterval(gameInterval); // 게임 루프 종료
+    winnerMessage.style.display = 'flex';
 }
 
 // 키보드 입력 처리
