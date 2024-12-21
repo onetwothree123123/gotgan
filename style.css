@@ -141,15 +141,18 @@
 /* 속도 조절 버튼 */
 .speed-controls {
     display: flex;
-    justify-content: center; /* 버튼을 X축 중앙 정렬 */
+    justify-content: center; /* X축 중앙 정렬 */
     gap: 10px; /* 버튼 간격 */
-    margin-top: 10px;
+    position: relative; /* 부모 요소 기준 위치 */
+    left: 50%; /* X축 기준 중앙으로 이동 */
+    transform: translateX(-50%); /* 정확히 중앙으로 맞춤 */
+    margin-top: 20px; /* Y축 위치 유지 */
 }
 
 .speed-controls .button {
     width: 50px;
     height: 50px;
-    font-size: 1.5rem; /* 글씨 크기 */
+    font-size: 1.5rem; /* 버튼 텍스트 크기 */
     font-weight: bold;
     text-align: center;
     color: white;
@@ -161,5 +164,5 @@
 }
 
 .speed-controls .button:hover {
-    background-color: #4682b4; /* 버튼 색상 변경 */
+    background-color: #4682b4; /* 버튼 호버 시 색상 변경 */
 }
