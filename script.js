@@ -15,13 +15,14 @@ const rightDownButton = document.getElementById('right-down');
 
 // 게임 상태 변수
 let ballX = 390, ballY = 190;
-let ballSpeedX = 3; // 공의 초기 속도 (조금 빠르게)
-let ballSpeedY = 3; // 공의 초기 속도 (조금 빠르게)
+let ballSpeedX = 3; // 공 초기 속도
+let ballSpeedY = 3; // 공 초기 속도
 let paddleLeftY = 150, paddleRightY = 150;
 let paddleSpeed = 20;
 let leftScore = 0, rightScore = 0;
 let isGameOver = false; // 게임 종료 여부 확인 변수
-const MAX_SPEED = 5; // 공의 최대 속도 제한 (적당히 빠르게)
+let gameInterval; // 게임 루프를 관리하는 변수
+const MAX_SPEED = 5; // 공 최대 속도 제한
 
 // 게임 초기화
 function initializeGame() {
@@ -38,24 +39,24 @@ function moveBall() {
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
-    // 공이 위아래 벽에 튕기는 처리
+    // 공이 벽에 튕기기
     if (ballY <= 0 || ballY >= 380) ballSpeedY = -ballSpeedY;
 
-    // 공이 패들에 튕기는 처리
+    // 공이 패들에 튕기기
     if (ballX <= 20 && ballY >= paddleLeftY && ballY <= paddleLeftY + 100) {
-        ballSpeedX = -ballSpeedX * 1.05; // 속도 증가율
-        ballSpeedY = ballSpeedY * 1.05; // 속도 증가율
+        ballSpeedX = -ballSpeedX * 1.05;
+        ballSpeedY = ballSpeedY * 1.05;
     }
     if (ballX >= 760 && ballY >= paddleRightY && ballY <= paddleRightY + 100) {
-        ballSpeedX = -ballSpeedX * 1.05; // 속도 증가율
-        ballSpeedY = ballSpeedY * 1.05; // 속도 증가율
+        ballSpeedX = -ballSpeedX * 1.05;
+        ballSpeedY = ballSpeedY * 1.05;
     }
 
-    // 공 속도 최대치 제한
+    // 공 속도 제한
     ballSpeedX = Math.min(MAX_SPEED, Math.max(-MAX_SPEED, ballSpeedX));
     ballSpeedY = Math.min(MAX_SPEED, Math.max(-MAX_SPEED, ballSpeedY));
 
-    // 공이 화면 밖으로 나간 경우 점수 증가
+    // 득점 처리
     if (ballX <= 0) {
         rightScore++;
         resetBall();
@@ -108,6 +109,7 @@ function showWinner(winner) {
     winnerMessage.textContent = `Winner: ${winner}`;
     winnerMessage.style.color = winner.toLowerCase(); // "Red" 또는 "Blue"에 맞는 색상
     winnerMessage.style.display = 'flex';
+    clearInterval(gameInterval); // 게임 루프 종료
 }
 
 // 키보드 입력 처리
@@ -147,6 +149,7 @@ function gameLoop() {
 
 // 재시작 버튼 클릭 처리
 restartButton.addEventListener('click', () => {
+    clearInterval(gameInterval); // 기존 게임 루프 종료
     leftScore = 0;
     rightScore = 0;
     isGameOver = false;
@@ -154,7 +157,7 @@ restartButton.addEventListener('click', () => {
     resetBall();
     initializeGame();
     winnerMessage.style.display = 'none';
-    gameInterval = setInterval(gameLoop, 16);
+    gameInterval = setInterval(gameLoop, 16); // 새로운 게임 루프 시작
 });
 
 // 게임 시작
