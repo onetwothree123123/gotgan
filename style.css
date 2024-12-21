@@ -137,3 +137,29 @@
 .control-button:hover {
     background-color: #1eae53;
 }
+
+/* 속도 조절 버튼 */
+.speed-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* 버튼 간격 */
+    margin-top: 10px;
+}
+
+.speed-controls .button {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem; /* 글씨 크기 */
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    background-color: #1e90ff; /* 파란색 버튼 */
+    border: none;
+    border-radius: 10px; /* 둥근 모서리 */
+    cursor: pointer;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5); /* 그림자 효과 */
+}
+
+.speed-controls .button:hover {
+    background-color: #4682b4; /* 버튼 색상 변경 */
+}
