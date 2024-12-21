@@ -13,8 +13,8 @@ const speedDownButton = document.getElementById('speed-down');
 
 // 게임 상태 변수
 let ballX = 390, ballY = 190;
-let ballSpeedX = 3; // 공 초기 속도
-let ballSpeedY = 3; // 공 초기 속도
+let ballSpeedX = 3.6; // 초기 속도 설정
+let ballSpeedY = 3.6; // 초기 속도 설정
 let paddleLeftY = 150, paddleRightY = 150;
 let paddleSpeed = 20;
 let leftScore = 0, rightScore = 0;
@@ -89,8 +89,8 @@ function updateScore() {
 function resetBall() {
     ballX = 390;
     ballY = 190;
-    ballSpeedX = ballSpeedX > 0 ? -3 : 3; // 기본 속도로 리셋
-    ballSpeedY = ballSpeedY > 0 ? -3 : 3; // 기본 속도로 리셋
+    ballSpeedX = ballSpeedX > 0 ? -3.6 : 3.6; // 초기 속도 유지
+    ballSpeedY = ballSpeedY > 0 ? -3.6 : 3.6; // 초기 속도 유지
 }
 
 // 우승 여부 확인
