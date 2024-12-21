@@ -7,11 +7,9 @@ const rightScoreElement = document.getElementById('bounce2');
 const winnerMessage = document.getElementById('winner-message');
 const restartButton = document.getElementById('restartButton');
 
-// 모바일 컨트롤 버튼
-const leftUpButton = document.getElementById('left-up');
-const leftDownButton = document.getElementById('left-down');
-const rightUpButton = document.getElementById('right-up');
-const rightDownButton = document.getElementById('right-down');
+// 속도 조절 버튼
+const speedUpButton = document.getElementById('speed-up');
+const speedDownButton = document.getElementById('speed-down');
 
 // 게임 상태 변수
 let ballX = 390, ballY = 190;
@@ -22,7 +20,8 @@ let paddleSpeed = 20;
 let leftScore = 0, rightScore = 0;
 let isGameOver = false; // 게임 종료 여부 확인 변수
 let gameInterval; // 게임 루프를 관리하는 변수
-const MAX_SPEED = 5; // 공 최대 속도 제한
+const MAX_SPEED = 10; // 공 최대 속도 제한
+const MIN_SPEED = 1; // 공 최소 속도 제한
 
 // 게임 초기화
 function initializeGame() {
@@ -74,7 +73,7 @@ function moveBall() {
     ball.style.top = ballY + 'px';
 }
 
-// 패들 위치 이동
+// 패들 이동 처리
 function movePaddles() {
     paddleLeft.style.top = paddleLeftY + 'px';
     paddleRight.style.top = paddleRightY + 'px';
@@ -121,24 +120,37 @@ document.addEventListener('keydown', (e) => {
 });
 
 // 모바일 컨트롤 버튼 클릭 처리
-leftUpButton?.addEventListener('click', () => {
+document.getElementById('left-up')?.addEventListener('click', () => {
     paddleLeftY -= paddleSpeed;
     movePaddles();
 });
 
-leftDownButton?.addEventListener('click', () => {
+document.getElementById('left-down')?.addEventListener('click', () => {
     paddleLeftY += paddleSpeed;
     movePaddles();
 });
 
-rightUpButton?.addEventListener('click', () => {
+document.getElementById('right-up')?.addEventListener('click', () => {
     paddleRightY -= paddleSpeed;
     movePaddles();
 });
 
-rightDownButton?.addEventListener('click', () => {
+document.getElementById('right-down')?.addEventListener('click', () => {
     paddleRightY += paddleSpeed;
     movePaddles();
+});
+
+// 속도 조절 버튼 기능
+speedUpButton.addEventListener('click', () => {
+    if (Math.abs(ballSpeedX) < MAX_SPEED) ballSpeedX *= 1.2; // 속도 증가
+    if (Math.abs(ballSpeedY) < MAX_SPEED) ballSpeedY *= 1.2;
+    console.log(`속도 증가: X = ${ballSpeedX.toFixed(2)}, Y = ${ballSpeedY.toFixed(2)}`);
+});
+
+speedDownButton.addEventListener('click', () => {
+    if (Math.abs(ballSpeedX) > MIN_SPEED) ballSpeedX /= 1.2; // 속도 감소
+    if (Math.abs(ballSpeedY) > MIN_SPEED) ballSpeedY /= 1.2;
+    console.log(`속도 감소: X = ${ballSpeedX.toFixed(2)}, Y = ${ballSpeedY.toFixed(2)}`);
 });
 
 // 게임 루프
