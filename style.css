@@ -141,7 +141,7 @@
 /* 속도 조절 버튼 */
 .speed-controls {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* 버튼을 X축 중앙 정렬 */
     gap: 10px; /* 버튼 간격 */
     margin-top: 10px;
 }
