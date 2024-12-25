@@ -3,42 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2D Pong Game</title>
+    <title>Ping Pong Game</title>
+    <!-- CSS 연결 -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- 게임 컨테이너 -->
     <div class="container">
+        <!-- 공 -->
         <div id="ball"></div>
+
+        <!-- 왼쪽 패들 -->
         <div id="paddle-left"></div>
+
+        <!-- 오른쪽 패들 -->
         <div id="paddle-right"></div>
+
+        <!-- 점수 -->
         <div id="scores">
             <span id="bounce">0</span>
             <span id="bounce2">0</span>
         </div>
+
+        <!-- 우승 메시지 -->
         <div id="winner-message"></div>
     </div>
 
-    <!-- 모바일 컨트롤 버튼 -->
+    <!-- 모바일 컨트롤 -->
     <div class="mobile-controls">
         <div class="left-controls">
-            <button class="control-button" id="left-up">위</button>
-            <button class="control-button" id="left-down">아래</button>
+            <button class="control-button" id="left-up">↑</button>
+            <button class="control-button" id="left-down">↓</button>
         </div>
         <div class="right-controls">
-            <button class="control-button" id="right-up">위</button>
-            <button class="control-button" id="right-down">아래</button>
+            <button class="control-button" id="right-up">↑</button>
+            <button class="control-button" id="right-down">↓</button>
         </div>
     </div>
 
     <!-- 속도 조절 버튼 -->
     <div class="speed-controls">
-        <button id="speed-up" class="button">+</button>
         <button id="speed-down" class="button">-</button>
+        <button id="speed-up" class="button">+</button>
     </div>
 
+    <!-- 재시작 버튼 -->
     <button id="restartButton" class="button">Restart</button>
 
+    <!-- JavaScript 연결 -->
     <script src="script.js"></script>
 </body>
 </html>
