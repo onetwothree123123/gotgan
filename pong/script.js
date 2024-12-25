@@ -172,6 +172,3 @@ restartButton.addEventListener('click', () => {
     gameInterval = setInterval(gameLoop, 16); // 새로운 게임 루프 시작
 });
 
-// 게임 시작
-initializeGame();
-gameInterval = setInterval(gameLoop, 16);
