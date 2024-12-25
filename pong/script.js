@@ -5,152 +5,143 @@ const paddleRight = document.getElementById('paddle-right');
 const leftScoreElement = document.getElementById('bounce');
 const rightScoreElement = document.getElementById('bounce2');
 const winnerMessage = document.getElementById('winner-message');
-const restartButton = document.getElementById('restartButton');
-
-// 속도 조절 버튼
 const speedUpButton = document.getElementById('speed-up');
 const speedDownButton = document.getElementById('speed-down');
 
-// 게임 상태 변수
-let ballX = 390, ballY = 190;
-let ballSpeedX = 3.6; // 초기 속도 설정
-let ballSpeedY = 3.6; // 초기 속도 설정
-let paddleLeftY = 150, paddleRightY = 150;
-let paddleSpeed = 20;
-let leftScore = 0, rightScore = 0;
-let isGameOver = false; // 게임 종료 여부 확인 변수
-let gameInterval; // 게임 루프를 관리하는 변수
-const MAX_SPEED = 10; // 공 최대 속도 제한
-const MIN_SPEED = 1; // 공 최소 속도 제한
+let ballX = 390;
+let ballY = 190;
+let ballSpeedX = 3.6;
+let ballSpeedY = 3.6;
 
-// 게임 초기화
-function initializeGame() {
-    ball.style.left = ballX + 'px';
-    ball.style.top = ballY + 'px';
-    paddleLeft.style.top = paddleLeftY + 'px';
-    paddleRight.style.top = paddleRightY + 'px';
-}
+let paddleLeftY = 150;
+let paddleRightY = 150;
+const paddleSpeed = 20;
 
-// 공 이동 처리
+let leftScore = 0;
+let rightScore = 0;
+
+let gameInterval;
+
+// 공 이동 함수
 function moveBall() {
-    if (isGameOver) return;
-
     ballX += ballSpeedX;
     ballY += ballSpeedY;
 
-    // 공이 벽에 튕기기
-    if (ballY <= 0 || ballY >= 380) ballSpeedY = -ballSpeedY;
-
-    // 공이 패들에 튕기기
-    if (ballX <= 20 && ballY >= paddleLeftY && ballY <= paddleLeftY + 100) {
-        ballSpeedX = -ballSpeedX * 1.05;
-        ballSpeedY = ballSpeedY * 1.05;
-    }
-    if (ballX >= 760 && ballY >= paddleRightY && ballY <= paddleRightY + 100) {
-        ballSpeedX = -ballSpeedX * 1.05;
-        ballSpeedY = ballSpeedY * 1.05;
+    // 공이 화면 위/아래 경계에 닿으면 튕기기
+    if (ballY <= 0 || ballY >= 380) {
+        ballSpeedY = -ballSpeedY;
     }
 
-    // 공 속도 제한
-    ballSpeedX = Math.min(MAX_SPEED, Math.max(-MAX_SPEED, ballSpeedX));
-    ballSpeedY = Math.min(MAX_SPEED, Math.max(-MAX_SPEED, ballSpeedY));
+    // 공이 왼쪽 패들에 닿았을 때 반사
+    if (
+        ballX <= 20 &&
+        ballY >= paddleLeftY &&
+        ballY <= paddleLeftY + 100
+    ) {
+        ballSpeedX = -ballSpeedX;
+    }
 
-    // 득점 처리
+    // 공이 오른쪽 패들에 닿았을 때 반사
+    if (
+        ballX >= 760 &&
+        ballY >= paddleRightY &&
+        ballY <= paddleRightY + 100
+    ) {
+        ballSpeedX = -ballSpeedX;
+    }
+
+    // 공이 왼쪽 벽에 닿으면 오른쪽 점수 증가
     if (ballX <= 0) {
         rightScore++;
-        resetBall();
         updateScore();
         checkWinner();
+        resetBall();
     }
+
+    // 공이 오른쪽 벽에 닿으면 왼쪽 점수 증가
     if (ballX >= 780) {
         leftScore++;
-        resetBall();
         updateScore();
         checkWinner();
+        resetBall();
     }
 
     ball.style.left = ballX + 'px';
     ball.style.top = ballY + 'px';
 }
 
-// 패들 이동 처리
+// 패들 이동 함수
 function movePaddles() {
-    paddleLeft.style.top = paddleLeftY + 'px';
-    paddleRight.style.top = paddleRightY + 'px';
+    paddleLeft.style.top = `${paddleLeftY}px`;
+    paddleRight.style.top = `${paddleRightY}px`;
 }
 
-// 점수 업데이트
+// 점수 업데이트 함수
 function updateScore() {
     leftScoreElement.textContent = leftScore;
     rightScoreElement.textContent = rightScore;
 }
 
-// 공 초기화 (속도 리셋)
+// 공 초기화 함수
 function resetBall() {
     ballX = 390;
     ballY = 190;
-    ballSpeedX = ballSpeedX > 0 ? -3.6 : 3.6; // 초기 속도 유지
-    ballSpeedY = ballSpeedY > 0 ? -3.6 : 3.6; // 초기 속도 유지
+    ballSpeedX = Math.abs(ballSpeedX) * (Math.random() > 0.5 ? 1 : -1); // 랜덤 방향
+    ballSpeedY = Math.abs(ballSpeedY) * (Math.random() > 0.5 ? 1 : -1);
 }
 
-// 우승 여부 확인
+// 우승자 확인 함수
 function checkWinner() {
     if (leftScore >= 5) {
-        showWinner('Red');
+        displayWinner('Player Left');
     } else if (rightScore >= 5) {
-        showWinner('Blue');
+        displayWinner('Player Right');
     }
 }
 
-// 우승 메시지 표시
-function showWinner(winner) {
-    isGameOver = true;
-    winnerMessage.textContent = `Winner: ${winner}`;
-    winnerMessage.style.color = winner.toLowerCase(); // "Red" 또는 "Blue"에 맞는 색상
-    winnerMessage.style.display = 'flex';
-    clearInterval(gameInterval); // 게임 루프 종료
+// 우승 메시지 표시 함수
+function displayWinner(winner) {
+    winnerMessage.textContent = `${winner} Wins!`;
+    winnerMessage.style.display = 'block';
+    clearInterval(gameInterval); // 게임 종료
+    document.removeEventListener('keydown', handlePaddleMovement); // 패들 제어 비활성화
 }
 
-// 키보드 입력 처리
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'w') paddleLeftY -= paddleSpeed;
-    if (e.key === 's') paddleLeftY += paddleSpeed;
-    if (e.key === 'ArrowUp') paddleRightY -= paddleSpeed;
-    if (e.key === 'ArrowDown') paddleRightY += paddleSpeed;
+// 키보드 입력으로 패들 움직이기
+function handlePaddleMovement(event) {
+    if (event.key === 'w' && paddleLeftY > 0) {
+        paddleLeftY -= paddleSpeed;
+    } else if (event.key === 's' && paddleLeftY < 300) {
+        paddleLeftY += paddleSpeed;
+    } else if (event.key === 'ArrowUp' && paddleRightY > 0) {
+        paddleRightY -= paddleSpeed;
+    } else if (event.key === 'ArrowDown' && paddleRightY < 300) {
+        paddleRightY += paddleSpeed;
+    }
+}
+
+// 모바일 컨트롤 버튼 이벤트
+document.getElementById('left-up').addEventListener('click', () => {
+    if (paddleLeftY > 0) paddleLeftY -= paddleSpeed;
+});
+document.getElementById('left-down').addEventListener('click', () => {
+    if (paddleLeftY < 300) paddleLeftY += paddleSpeed;
+});
+document.getElementById('right-up').addEventListener('click', () => {
+    if (paddleRightY > 0) paddleRightY -= paddleSpeed;
+});
+document.getElementById('right-down').addEventListener('click', () => {
+    if (paddleRightY < 300) paddleRightY += paddleSpeed;
 });
 
-// 모바일 컨트롤 버튼 클릭 처리
-document.getElementById('left-up')?.addEventListener('click', () => {
-    paddleLeftY -= paddleSpeed;
-    movePaddles();
-});
-
-document.getElementById('left-down')?.addEventListener('click', () => {
-    paddleLeftY += paddleSpeed;
-    movePaddles();
-});
-
-document.getElementById('right-up')?.addEventListener('click', () => {
-    paddleRightY -= paddleSpeed;
-    movePaddles();
-});
-
-document.getElementById('right-down')?.addEventListener('click', () => {
-    paddleRightY += paddleSpeed;
-    movePaddles();
-});
-
-// 속도 조절 버튼 기능
+// 속도 조절 버튼 이벤트
 speedUpButton.addEventListener('click', () => {
-    if (Math.abs(ballSpeedX) < MAX_SPEED) ballSpeedX *= 1.2; // 속도 증가
-    if (Math.abs(ballSpeedY) < MAX_SPEED) ballSpeedY *= 1.2;
-    console.log(`속도 증가: X = ${ballSpeedX.toFixed(2)}, Y = ${ballSpeedY.toFixed(2)}`);
+    ballSpeedX *= 1.1;
+    ballSpeedY *= 1.1;
 });
-
 speedDownButton.addEventListener('click', () => {
-    if (Math.abs(ballSpeedX) > MIN_SPEED) ballSpeedX /= 1.2; // 속도 감소
-    if (Math.abs(ballSpeedY) > MIN_SPEED) ballSpeedY /= 1.2;
-    console.log(`속도 감소: X = ${ballSpeedX.toFixed(2)}, Y = ${ballSpeedY.toFixed(2)}`);
+    ballSpeedX *= 0.9;
+    ballSpeedY *= 0.9;
 });
 
 // 게임 루프
@@ -159,16 +150,22 @@ function gameLoop() {
     movePaddles();
 }
 
-// 재시작 버튼 클릭 처리
-restartButton.addEventListener('click', () => {
-    clearInterval(gameInterval); // 기존 게임 루프 종료
+// 게임 시작
+function startGame() {
+    gameInterval = setInterval(gameLoop, 16);
+    document.addEventListener('keydown', handlePaddleMovement);
+}
+
+// 게임 재시작 버튼 이벤트
+document.getElementById('restartButton').addEventListener('click', () => {
     leftScore = 0;
     rightScore = 0;
-    isGameOver = false;
     updateScore();
     resetBall();
-    initializeGame();
     winnerMessage.style.display = 'none';
-    gameInterval = setInterval(gameLoop, 16); // 새로운 게임 루프 시작
+    clearInterval(gameInterval);
+    startGame();
 });
 
+// 게임 시작 호출
+startGame();
