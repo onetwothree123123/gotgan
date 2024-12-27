@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stage 1</title>
+    <link rel="stylesheet" href="1stage.css">
+</head>
+<body>
+    <!-- 게임 컨테이너 -->
+    <div class="game-container">
+        <!-- 뒤로가기 버튼 -->
+        <button class="back-button" onclick="goToMain()">←</button>
+
+        <!-- 검은 선 -->
+        <div class="wall top-wall"></div>
+        <div class="wall bottom-wall"></div>
+
+        <!-- 플레이어 -->
+        <div id="player"></div>
+
+        <!-- 목표 -->
+        <div id="goal"></div>
+
+        <!-- 장애물 -->
+        <div id="obstacle">
+            <span>지나가세요</span>
+        </div>
+
+        <!-- 메시지 박스 -->
+        <div id="message-box" class="hidden">
+            <p class="message-text">Died</p>
+            <p class="restart-text">R을 눌러 재시작</p>
+        </div>
+    </div>
+
+    <script>
+        // 뒤로가기 버튼 함수
+        function goToMain() {
+            window.location.href = "main scene.html"; // 메인화면으로 이동
+        }
+
+        // 플레이어 이동 로직
+        const player = document.getElementById("player");
+        const goal = document.getElementById("goal");
+        const obstacle = document.getElementById("obstacle");
+        const walls = document.querySelectorAll(".wall");
+        const messageBox = document.getElementById("message-box");
+
+        let playerPosition = { x: 50, y: 500 }; // 초기 위치
+        const step = 20; // 이동 거리
+
+        let gameOver = false; // 게임 상태 체크
+
+        document.addEventListener("keydown", (event) => {
+            const key = event.key;
+
+            if (gameOver && key === "r") {
+                restartStage(); // 게임 재시작
+                return;
+            }
+
+            if (gameOver) return; // 게임 오버 상태에서는 이동 불가
+
+            // 플레이어 이동
+            const previousPosition = { ...playerPosition }; // 이동 전 위치 저장
+            if (key === "ArrowUp") playerPosition.y -= step;
+            if (key === "ArrowDown") playerPosition.y += step;
+            if (key === "ArrowLeft") playerPosition.x -= step;
+            if (key === "ArrowRight") playerPosition.x += step;
+
+            // 화면 경계 확인
+            playerPosition.x = Math.max(0, Math.min(playerPosition.x, 1880));
+            playerPosition.y = Math.max(0, Math.min(playerPosition.y, 1020));
+
+            // 위치 업데이트
+            player.style.left = `${playerPosition.x}px`;
+            player.style.top = `${playerPosition.y}px`;
+
+            // 검은 선 충돌 감지
+            if (Array.from(walls).some((wall) => isColliding(player, wall))) {
+                playerPosition = previousPosition; // 이동을 취소
+                player.style.left = `${playerPosition.x}px`;
+                player.style.top = `${playerPosition.y}px`;
+            }
+
+            // 장애물 충돌 감지
+            if (isColliding(player, obstacle)) {
+                showGameOver(); // 게임 오버 처리
+            }
+
+            // 목표 도달 감지
+            if (isColliding(player, goal)) {
+                alert("Complete");
+                window.location.href = "2stage.html"; // 다음 스테이지로 이동
+            }
+        });
+
+        // 충돌 감지 함수
+        function isColliding(obj1, obj2) {
+            const rect1 = obj1.getBoundingClientRect();
+            const rect2 = obj2.getBoundingClientRect();
+
+            return !(
+                rect1.top > rect2.bottom ||
+                rect1.bottom < rect2.top ||
+                rect1.left > rect2.right ||
+                rect1.right < rect2.left
+            );
+        }
+
+        // 게임 오버 처리
+        function showGameOver() {
+            gameOver = true;
+            messageBox.classList.remove("hidden"); // 메시지 박스 표시
+        }
+
+        // 스테이지 재시작
+        function restartStage() {
+            gameOver = false;
+            playerPosition = { x: 50, y: 500 }; // 초기 위치로 복원
+            player.style.left = `${playerPosition.x}px`;
+            player.style.top = `${playerPosition.y}px`;
+            messageBox.classList.add("hidden"); // 메시지 박스 숨기기
+        }
+    </script>
+</body>
+</html>
