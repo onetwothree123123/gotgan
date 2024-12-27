@@ -17,37 +17,14 @@
             <button class="stage-button" onclick="goToStage(3)">3</button>
             <button class="stage-button" onclick="goToStage(4)">4</button>
             <button class="stage-button" onclick="goToStage(5)">5</button>
-
-            <button class="stage-button" onclick="goToStage(6)">6</button>
-            <button class="stage-button" onclick="goToStage(7)">7</button>
-            <button class="stage-button" onclick="goToStage(8)">8</button>
-            <button class="stage-button" onclick="goToStage(9)">9</button>
-            <button class="stage-button" onclick="goToStage(10)">10</button>
-
-            <button class="stage-button" onclick="goToStage(11)">11</button>
-            <button class="stage-button" onclick="goToStage(12)">12</button>
-            <button class="stage-button" onclick="goToStage(13)">13</button>
-            <button class="stage-button" onclick="goToStage(14)">14</button>
-            <button class="stage-button" onclick="goToStage(15)">15</button>
-
-            <button class="stage-button" onclick="goToStage(16)">16</button>
-            <button class="stage-button" onclick="goToStage(17)">17</button>
-            <button class="stage-button" onclick="goToStage(18)">18</button>
-            <button class="stage-button" onclick="goToStage(19)">19</button>
-            <button class="stage-button" onclick="goToStage(20)">20</button>
-
-            <button class="stage-button" onclick="goToStage(21)">21</button>
-            <button class="stage-button" onclick="goToStage(22)">22</button>
-            <button class="stage-button" onclick="goToStage(23)">23</button>
-            <button class="stage-button" onclick="goToStage(24)">24</button>
-            <button class="stage-button" onclick="goToStage(25)">25</button>
+            <!-- 필요 시 버튼 추가 -->
         </div>
     </div>
 
     <script>
         // 스테이지 이동 함수
         function goToStage(stageNumber) {
-            window.location.href = `stage${stageNumber}.html`;
+            window.location.href = `${stageNumber}stage.html`; // 스테이지 URL 이동
         }
     </script>
 </body>
