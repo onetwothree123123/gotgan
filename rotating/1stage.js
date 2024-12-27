@@ -101,10 +101,15 @@ function showComplete() {
     messageBox.innerHTML = `
         <div style="background: white; color: green; padding: 20px; border-radius: 10px; text-align: center;">
             <h2>Complete</h2>
-            <p>다음 스테이지로 이동하세요!</p>
+            <p><button onclick="goToNextStage()" style="padding: 10px 20px; font-size: 16px; background-color: green; color: white; border: none; border-radius: 5px; cursor: pointer;">다음 스테이지로 이동</button></p>
         </div>
     `;
     messageBox.style.display = 'block';
+}
+
+// 다음 스테이지 이동
+function goToNextStage() {
+    window.location.href = '2stage.html'; // 다음 스테이지 파일 경로
 }
 
 // 스테이지 재시작
