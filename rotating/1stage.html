@@ -7,10 +7,9 @@
     <link rel="stylesheet" href="1stage.css"> <!-- CSS 연결 -->
 </head>
 <body>
-    <!-- 게임 컨테이너 -->
     <div class="game-container">
         <!-- 뒤로가기 버튼 -->
-        <button class="back-button" onclick="goToMain()">←</button>
+        <button class="back-button" onclick="window.location.href='main scene.html'">←</button>
 
         <!-- 검은 선 -->
         <div class="wall top-wall"></div>
@@ -23,15 +22,10 @@
         <div id="goal"></div>
 
         <!-- 장애물 -->
-        <div id="obstacle">
-            <span>지나가세요</span>
-        </div>
+        <div id="obstacle"></div>
 
         <!-- 메시지 박스 -->
-        <div id="message-box" class="hidden">
-            <p class="message-text">Died</p>
-            <p class="restart-text">R을 눌러 재시작</p>
-        </div>
+        <div id="message-box" style="display: none;"></div>
     </div>
 
     <!-- JavaScript 연결 -->
