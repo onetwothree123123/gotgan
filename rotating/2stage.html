@@ -1,1 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stage 2</title>
+    <link rel="stylesheet" href="2stage.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- 뒤로가기 버튼 -->
+        <button class="back-button" onclick="window.location.href='stagess.html'">←</button>
+
+        <!-- 검은 벽 -->
+        <div class="wall top-wall"></div>
+        <div class="wall bottom-wall"></div>
+        <div class="wall left-wall"></div>
+        <div class="wall right-wall"></div>
+
+        <!-- 장애물 -->
+        <div class="obstacle">
+            <p class="obstacle-text">wasd키는 빠르게, 화살표키는 느리게</p>
+        </div>
+        <div class="obstacle bottom-obstacle"></div>
+
+        <!-- 플레이어 -->
+        <div id="player"></div>
+
+        <!-- 목표 -->
+        <div id="goal"></div>
+    </div>
+
+    <script src="2stage.js"></script>
+</body>
+</html>
 
