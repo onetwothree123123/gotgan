@@ -1,93 +1,79 @@
 const player = document.getElementById('player');
-const obstacle = document.getElementById('obstacle');
 const goal = document.getElementById('goal');
+const obstacle = document.getElementById('obstacle');
+const walls = document.querySelectorAll('.wall');
 const messageBox = document.getElementById('message-box');
 
-let playerSpeedFast = 5; // WASD 이동 속도
-let playerSpeedSlow = 2; // 화살표 이동 속도
+let playerPosition = { x: 50, y: 500 }; // 초기 위치
+const step = 20; // 이동 거리
 
-// 플레이어 초기 위치
-let playerX = 50;
-let playerY = 200;
+let gameOver = false; // 게임 상태 체크
 
-// 초기 상태
-let isGameOver = false;
-
-// 장애물 충돌 검사
-function checkCollision() {
-    const playerRect = player.getBoundingClientRect();
-    const obstacleRect = obstacle.getBoundingClientRect();
-    const goalRect = goal.getBoundingClientRect();
-
-    // 장애물과 충돌
-    if (
-        playerRect.right > obstacleRect.left &&
-        playerRect.left < obstacleRect.right &&
-        playerRect.bottom > obstacleRect.top &&
-        playerRect.top < obstacleRect.bottom
-    ) {
-        displayMessage('Died', 'red', 'R을 눌러 재시작');
-        isGameOver = true;
-    }
-
-    // 목표 지점 도달
-    if (
-        playerRect.right > goalRect.left &&
-        playerRect.left < goalRect.right &&
-        playerRect.bottom > goalRect.top &&
-        playerRect.top < goalRect.bottom
-    ) {
-        displayMessage('Complete', 'green', '다음 스테이지로 이동하세요!');
-        isGameOver = true;
-    }
-}
-
-// 메시지 표시 함수
-function displayMessage(title, color, subtitle) {
-    messageBox.innerHTML = `
-        <div style="background: white; color: ${color}; padding: 20px; border-radius: 10px; text-align: center;">
-            <h2>${title}</h2>
-            <p>${subtitle}</p>
-        </div>
-    `;
-    messageBox.style.display = 'block';
-}
-
-// 키보드 입력 처리
 document.addEventListener('keydown', (event) => {
-    if (isGameOver) {
-        // 게임 오버 상태에서 R 키를 눌렀을 때 재시작
-        if (event.key === 'r' || event.key === 'R') {
-            window.location.reload();
-        }
-        return; // 게임 오버 시 움직임 비활성화
+    const key = event.key;
+
+    if (gameOver && key === 'r') {
+        restartStage(); // 게임 재시작
+        return;
     }
 
-    // WASD 키 이동
-    if (event.key === 'w' || event.key === 'W') playerY -= playerSpeedFast;
-    if (event.key === 's' || event.key === 'S') playerY += playerSpeedFast;
-    if (event.key === 'a' || event.key === 'A') playerX -= playerSpeedFast;
-    if (event.key === 'd' || event.key === 'D') playerX += playerSpeedFast;
+    if (gameOver) return; // 게임 오버 상태에서는 이동 불가
 
-    // 화살표 키 이동
-    if (event.key === 'ArrowUp') playerY -= playerSpeedSlow;
-    if (event.key === 'ArrowDown') playerY += playerSpeedSlow;
-    if (event.key === 'ArrowLeft') playerX -= playerSpeedSlow;
-    if (event.key === 'ArrowRight') playerX += playerSpeedSlow;
+    // 이동 전 위치 저장
+    const previousPosition = { ...playerPosition };
+    if (key === 'ArrowUp') playerPosition.y -= step;
+    if (key === 'ArrowDown') playerPosition.y += step;
+    if (key === 'ArrowLeft') playerPosition.x -= step;
+    if (key === 'ArrowRight') playerPosition.x += step;
 
-    // 화면 밖으로 나가지 않도록 제한
-    const gameArea = document.getElementById('game-area').getBoundingClientRect();
-    const playerRect = player.getBoundingClientRect();
+    // 화면 경계 확인
+    playerPosition.x = Math.max(0, Math.min(playerPosition.x, 1880));
+    playerPosition.y = Math.max(0, Math.min(playerPosition.y, 1020));
 
-    if (playerX < 0) playerX = 0;
-    if (playerX + playerRect.width > gameArea.width) playerX = gameArea.width - playerRect.width;
-    if (playerY < 0) playerY = 0;
-    if (playerY + playerRect.height > gameArea.height) playerY = gameArea.height - playerRect.height;
+    // 위치 업데이트
+    player.style.left = `${playerPosition.x}px`;
+    player.style.top = `${playerPosition.y}px`;
 
-    // 플레이어 위치 업데이트
-    player.style.left = `${playerX}px`;
-    player.style.top = `${playerY}px`;
+    // 검은 선 충돌 감지
+    if (Array.from(walls).some((wall) => isColliding(player, wall))) {
+        playerPosition = previousPosition;
+        player.style.left = `${playerPosition.x}px`;
+        player.style.top = `${playerPosition.y}px`;
+    }
 
-    // 충돌 검사
-    checkCollision();
+    // 장애물 충돌 감지
+    if (isColliding(player, obstacle)) {
+        showGameOver();
+    }
+
+    // 목표 도달 감지
+    if (isColliding(player, goal)) {
+        alert('Complete');
+        window.location.href = '2stage.html'; // 다음 스테이지로 이동
+    }
 });
+
+function isColliding(obj1, obj2) {
+    const rect1 = obj1.getBoundingClientRect();
+    const rect2 = obj2.getBoundingClientRect();
+
+    return !(
+        rect1.top > rect2.bottom ||
+        rect1.bottom < rect2.top ||
+        rect1.left > rect2.right ||
+        rect1.right < rect2.left
+    );
+}
+
+function showGameOver() {
+    gameOver = true;
+    messageBox.classList.remove('hidden');
+}
+
+function restartStage() {
+    gameOver = false;
+    playerPosition = { x: 50, y: 500 };
+    player.style.left = `${playerPosition.x}px`;
+    player.style.top = `${playerPosition.y}px`;
+    messageBox.classList.add('hidden');
+}
