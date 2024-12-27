@@ -1,1 +1,108 @@
+/* 전체 배경 및 화면 설정 */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #fdf6e4; /* 연한 노란색 */
+    font-family: Arial, sans-serif;
+}
 
+.game-container {
+    position: relative;
+    width: 1920px;
+    height: 1080px;
+    margin: 0 auto;
+    border: 2px solid black;
+    overflow: hidden;
+}
+
+/* 뒤로가기 버튼 */
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: gray;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+/* 벽 */
+.wall {
+    position: absolute;
+    background-color: black;
+}
+
+.top-wall {
+    top: 0;
+    width: 100%;
+    height: 10px;
+}
+
+.bottom-wall {
+    bottom: 0;
+    width: 100%;
+    height: 10px;
+}
+
+.left-wall {
+    left: 0;
+    width: 10px;
+    height: 100%;
+}
+
+.right-wall {
+    right: 0;
+    width: 10px;
+    height: 100%;
+}
+
+/* 장애물 */
+.obstacle {
+    position: absolute;
+    width: 300px;
+    height: 200px;
+    background-color: #6b6b7c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.obstacle {
+    top: 200px;
+    left: 810px;
+}
+
+.bottom-obstacle {
+    top: 680px;
+    left: 810px;
+}
+
+/* 플레이어 */
+#player {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: red;
+    border-radius: 50%;
+    left: 50px;
+    top: 500px;
+}
+
+/* 목표 */
+#goal {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: green;
+    right: 50px;
+    top: 500px;
+}
