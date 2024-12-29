@@ -1,56 +1,75 @@
-const player = document.getElementById('player');
-const goal = document.getElementById('goal');
-const obstacles = document.querySelectorAll('.obstacle');
-const walls = document.querySelectorAll('.wall');
+// 뒤로가기 버튼
+function goToStages() {
+    window.location.href = "stagess.html";
+}
 
-let playerX = 50;
-let playerY = 500;
-let isGameOver = false;
+// 다음 스테이지 이동
+function goToNextStage() {
+    window.location.href = "3stage.html"; // 3스테이지로 이동
+}
 
-const fastSpeed = 20; // WASD 속도
-const slowSpeed = 5; // 화살표 속도
+// 플레이어 이동 및 초기화
+const player = document.getElementById("player");
+const goal = document.getElementById("goal");
+const obstacleTop = document.getElementById("obstacle-top");
+const obstacleBottom = document.getElementById("obstacle-bottom");
+const walls = document.querySelectorAll(".wall");
+const messageBox = document.getElementById("message-box");
+const clearBox = document.getElementById("clear-box");
 
-document.addEventListener('keydown', (event) => {
-    if (isGameOver) return;
+let playerPosition = { x: 50, y: 520 }; // 초기 위치
+const fastStep = 20; // W, A, S, D 빠른 이동
+const slowStep = 10; // 화살표키 느린 이동
+let gameOver = false;
 
-    const prevX = playerX;
-    const prevY = playerY;
-
-    // WASD 키 이동
-    if (event.key.toLowerCase() === 'w') playerY -= fastSpeed;
-    if (event.key.toLowerCase() === 's') playerY += fastSpeed;
-    if (event.key.toLowerCase() === 'a') playerX -= fastSpeed;
-    if (event.key.toLowerCase() === 'd') playerX += fastSpeed;
-
-    // 화살표 키 이동
-    if (event.key === 'ArrowUp') playerY -= slowSpeed;
-    if (event.key === 'ArrowDown') playerY += slowSpeed;
-    if (event.key === 'ArrowLeft') playerX -= slowSpeed;
-    if (event.key === 'ArrowRight') playerX += slowSpeed;
-
-    // 벽에 닿았을 때
-    if (Array.from(walls).some(wall => isColliding(player, wall))) {
-        playerX = prevX;
-        playerY = prevY;
+// 이동 로직
+document.addEventListener("keydown", (event) => {
+    if (gameOver && event.key === "r") {
+        restartStage();
+        return;
     }
+
+    if (gameOver) return;
+
+    const key = event.key;
+    const previousPosition = { ...playerPosition };
+
+    if (key === "w") playerPosition.y -= fastStep;
+    if (key === "s") playerPosition.y += fastStep;
+    if (key === "a") playerPosition.x -= fastStep;
+    if (key === "d") playerPosition.x += fastStep;
+
+    if (key === "ArrowUp") playerPosition.y -= slowStep;
+    if (key === "ArrowDown") playerPosition.y += slowStep;
+    if (key === "ArrowLeft") playerPosition.x -= slowStep;
+    if (key === "ArrowRight") playerPosition.x += slowStep;
+
+    // 화면 경계 제한
+    playerPosition.x = Math.max(0, Math.min(playerPosition.x, 1880));
+    playerPosition.y = Math.max(0, Math.min(playerPosition.y, 1020));
 
     // 위치 업데이트
-    player.style.left = `${playerX}px`;
-    player.style.top = `${playerY}px`;
+    player.style.left = `${playerPosition.x}px`;
+    player.style.top = `${playerPosition.y}px`;
 
-    // 장애물 충돌 감지
-    if (Array.from(obstacles).some(obstacle => isColliding(player, obstacle))) {
-        alert('Died');
-        restartStage();
+    // 장애물 및 벽 충돌 확인
+    if (isColliding(player, obstacleTop) || isColliding(player, obstacleBottom)) {
+        showGameOver();
     }
 
-    // 목표 도달 감지
+    if (Array.from(walls).some((wall) => isColliding(player, wall))) {
+        playerPosition = previousPosition;
+        player.style.left = `${playerPosition.x}px`;
+        player.style.top = `${playerPosition.y}px`;
+    }
+
+    // 목표 도달 확인
     if (isColliding(player, goal)) {
-        alert('Complete');
-        window.location.href = '3stage.html';
+        showClear();
     }
 });
 
+// 충돌 감지
 function isColliding(obj1, obj2) {
     const rect1 = obj1.getBoundingClientRect();
     const rect2 = obj2.getBoundingClientRect();
@@ -63,9 +82,24 @@ function isColliding(obj1, obj2) {
     );
 }
 
+// 게임 오버 처리
+function showGameOver() {
+    gameOver = true;
+    messageBox.classList.remove("hidden");
+}
+
+// 스테이지 클리어 처리
+function showClear() {
+    gameOver = true;
+    clearBox.classList.remove("hidden");
+}
+
+// 재시작
 function restartStage() {
-    playerX = 50;
-    playerY = 500;
-    player.style.left = `${playerX}px`;
-    player.style.top = `${playerY}px`;
+    gameOver = false;
+    playerPosition = { x: 50, y: 520 };
+    player.style.left = `${playerPosition.x}px`;
+    player.style.top = `${playerPosition.y}px`;
+    messageBox.classList.add("hidden");
+    clearBox.classList.add("hidden");
 }
